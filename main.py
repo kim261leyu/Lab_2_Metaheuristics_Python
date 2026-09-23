@@ -10,11 +10,15 @@ from src.problem import generate_problem, compute_makespan, compute_energy
 from src.ga_solver import ga
 from src.aco_solver import aco
 
-from plot import plot_convergence
+import numpy as np
+import matplotlib.pyplot as plt
 
 IDLE_POWER_WATTS = 100
 MAX_POWER_WATTS = 200
 
+def pad(histories):
+    L = max(len(h) for h in histories)
+    return np.array([h + [h[-1]] * (L - len(h)) for h in histories])
 
 def print_problem_details(problem_config, weights, aco_weights):
     print("  PROBLEM CONFIGURATION")
@@ -112,7 +116,7 @@ def run_solver(solver_fn, problem, idle_power_watts, max_power_watts, contention
     )
 
 
-    return result
+    return result, history
     
 def compute_average_results(results):
     n = len(results)
@@ -176,6 +180,8 @@ def main():
 
     ga_results = []
     aco_results = []
+    ga_histories = []
+    aco_histories = []
 
     for i in range(5):
         problem = generate_problem(
@@ -191,7 +197,7 @@ def main():
 
         seed = problem_config["seed"][i]
 
-        ga_result = run_solver(
+        ga_result, ga_history = run_solver(
             ga,
             problem,
             problem_config["idle_power_watts"],
@@ -205,10 +211,11 @@ def main():
             patience=ga_config["patience"],
         )
         ga_results.append(ga_result)
+        ga_histories.append(ga_history)
         if has_overload(problem, ga_result.best_chromosome):
             print("ga overload")
         
-        aco_result = run_solver(
+        aco_result, aco_history = run_solver(
             aco,
             problem,
             problem_config["idle_power_watts"],
@@ -222,6 +229,7 @@ def main():
             patience=aco_config["patience"],
         )
         aco_results.append(aco_result)
+        aco_histories.append(aco_history)
         if has_overload(problem, aco_result.best_chromosome):
             print("aco overload")
         
@@ -232,16 +240,25 @@ def main():
             seed=seed
         )
 
-        plot_convergence({
-            "GA": ga_result.fitness_history,
-            "ACO": aco_result.fitness_history
-        })
+            
     avg_ga = compute_average_results(ga_results);
     avg_aco = compute_average_results(aco_results)
     
-    print_results(problem, avg_ga, avg_aco
-        
-    )
+    print_results(problem, avg_ga, avg_aco)
+    
+    fig, ax = plt.subplots(figsize=(7, 4))
+    for name, results, color in [("GA", ga_histories, "tab:blue"), ("ACO", aco_histories, "tab:orange")]:
+        H = pad([r for r in results])
+        for row in H:
+            ax.plot(row, color=color, alpha=0.2)          # individual runs
+        ax.plot(H.mean(axis=0), color=color, lw=2, label=f"{name} (mean of 5)")
+
+    ax.set_xlabel("Generation / iteration")
+    ax.set_ylabel("Best fitness (lower is better)")
+    ax.legend()
+    ax.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.savefig("pic.png", dpi=200)
 
 
 if __name__ == "__main__":
