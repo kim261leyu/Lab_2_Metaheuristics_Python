@@ -1,0 +1,70 @@
+population_size :  50
+tournament_size :  5
+mutation_rate :  0.05
+max_generations :  500
+patience :  20
+
+Best fitness: 0.8726
+Active servers used: 5 / 6
+Runtime: 0.03s
+Generations run: 54
+
+population_size :  50
+tournament_size :  5
+mutation_rate :  0.05
+max_generations :  500
+patience :  200
+
+Best fitness: 0.8664
+Active servers used: 5 / 6
+Runtime: 0.14s
+Generations run: 262
+
+population_size :  50
+tournament_size :  5
+mutation_rate :  0.1
+max_generations :  500
+patience :  20
+
+Best fitness: 0.8870
+Active servers used: 5 / 6
+Runtime: 0.05s
+Generations run: 87
+
+population_size :  500
+tournament_size :  5
+mutation_rate :  0.05
+max_generations :  500
+patience :  20
+
+Best fitness: 0.9136
+Active servers used: 5 / 6
+Runtime: 0.16s
+Generations run: 28
+
+population_size :  10
+tournament_size :  5
+mutation_rate :  0.05
+max_generations :  500
+patience :  20
+
+Best fitness: 0.9348
+Active servers used: 5 / 6
+Runtime: 0.00s
+Generations run: 40
+
+population_size :  10
+mutation_rate :  0.05
+max_generations :  500
+patience :  20
+
+population_size :  10
+mutation_rate :  0.05
+max_generations :  500
+patience :  20
+
+Best fitness: 0.8991
+Active servers used: 5 / 6
+Runtime: 0.01s
+Generations run: 133
+

@@ -1,0 +1,33 @@
+problem:
+  num_vms: 100
+  num_servers: 50
+  server_cpu_capacity: 100
+  server_ram_capacity: 100
+  vm_cpu_range: [5, 30]
+  vm_ram_range: [5, 30]
+  vm_duration_range: [1, 100]
+  contention_factor: 0.2
+  idle_power_watts: 100
+  max_power_watts: 200
+  seed: [42, 1, 24, 31, 100]
+ga:
+  population_size: 50
+  tournament_size: 5
+  mutation_rate: 0.05
+  max_generations: 500
+  patience: 20
+
+aco:
+  colony_size: 50
+  max_iterations: 500
+  evaporation_rate: 0.5
+  patience: 20
+
+aco_weights:
+  alpha: 0.5
+  beta: 0.5
+  
+fitness_weights:
+  balance: 1.0
+  consolidation: 1.0
+  penalty: 100.0
