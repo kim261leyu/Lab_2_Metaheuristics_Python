@@ -85,7 +85,7 @@ def print_results(problem, ga_result, aco_result, seed=None):
             "Active Servers",
             "Best Fitness",
         ],
-        tablefmt="grid",
+        tablefmt="github",
     ))
 
 
@@ -259,6 +259,13 @@ def main():
     ax.grid(alpha=0.3)
     plt.tight_layout()
     plt.savefig("pic.png", dpi=200)
+    
+    for name, results in [("GA", ga_histories), ("ACO", aco_histories)]:
+        for i, r in enumerate(results):
+            h = np.array(r )
+            last_improve = int(np.where(h < h.min() + 1e-12)[0][0])  # first index where the final best value is reached
+            print(f"{name} run {i}: len(history)={len(h)}"
+                  f"reaches final best at iter {last_improve}, final={h.min():.4f}")
 
 
 if __name__ == "__main__":
